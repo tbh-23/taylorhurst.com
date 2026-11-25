@@ -1063,7 +1063,7 @@
         '  <span class="u">clear</span>      clear the screen\n' +
         '  <span class="muted2">...a few things aren\'t on this list. poke around.</span>';
     },
-    about: function () { return "Taylor Hurst, Partner at Konvoy (deep tech, gaming, critical\nindustries, OSS, hardware). Maryland-raised, ASU grad, Denver-based.\nRuns races, builds the occasional app, learns history + new tech\nfor fun."; },
+    about: function () { return "Taylor Hurst, Partner at Konvoy (deep tech, critical industries,\nOSS, hardware).Maryland-raised, ASU grad, Denver-based.\nRuns races, builds the occasional app, learns history + new tech\nfor fun."; },
     whoami: function () { return "taylor hurst · partner at konvoy · denver, co\nmaryland-raised · asu grad · @taylorbhurst"; },
     projects: function () { openWin("projects"); return "opening projects... Homestead → github.com/tbh-23/Homestead"; },
     races: function () { openWin("races"); return "2x half marathon + 1 hyrox in 2026. opening ./races"; },
@@ -1085,11 +1085,11 @@
     sudo: function (args) {
       args = (args || "").toLowerCase();
       if (args.indexOf("pitch") > -1 || args.indexOf("invest") > -1 || args.indexOf("raise") > -1)
-        return "building in deep tech, gaming, critical industries, OSS or hardware?\n→ <a href=\"https://konvoy.vc\" target=\"_blank\" rel=\"noopener\">konvoy.vc</a> or <a href=\"https://x.com/taylorbhurst\" target=\"_blank\" rel=\"noopener\">dm me</a>. the best founders skip the sudo.";
+        return "building in deep tech, critical industries, OSS or hardware?\n→ <a href=\"https://konvoy.vc\" target=\"_blank\" rel=\"noopener\">konvoy.vc</a> or <a href=\"https://x.com/taylorbhurst\" target=\"_blank\" rel=\"noopener\">dm me</a>. the best founders skip the sudo.";
       if (args.indexOf("hire") > -1) return "you’ve got it backwards. i’m the one hunting for founders. try <span class=\"u\">sudo pitch-me</span>.";
       return "<span class=\"e\">taylor is not in the sudoers file. this incident will be reported.</span> 😏";
     },
-    konvoy: function () { return 'early-stage fund for deep tech, gaming, critical industries, OSS\nand hardware. find more at <a href="https://konvoy.vc" target="_blank" rel="noopener">konvoy.vc</a>.'; },
+    konvoy: function () { return 'early-stage fund for deep tech, critical industries, OSS and\nhardware. find more at <a href="https://konvoy.vc" target="_blank" rel="noopener">konvoy.vc</a>.'; },
     pitch: function () { return CMDS.sudo("pitch"); },
     open: function (args) {
       var id = (args||"").trim();
