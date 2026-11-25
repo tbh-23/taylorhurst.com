@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap">
 <style>
-  /* taylorhurst.os — a retro desktop whose "sky" re-themes to the visitor's local time of day.
+  /* taylorhurst.os: a retro desktop whose "sky" re-themes to the visitor's local time of day.
      Layout: full-screen OS (menu bar + desktop of icons + draggable windows), mono-forward, cool-blue. */
   :root {
     color-scheme: dark;
@@ -34,7 +34,7 @@
     --radius: 10px;
     --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
     --display: "Space Grotesk", var(--mono);
-    /* mood tokens (JS overwrites these) — alpenglow palette, default = night */
+    /* mood tokens (JS overwrites these); alpenglow palette, default = night */
     --sky-top: #141433;
     --sky-bot: #3e2a5c;
     --orb: #e4dcff;
@@ -370,7 +370,7 @@
   <div class="desktop">
     <div class="greeting">
       <p class="hi" id="greetHi">Hello.</p>
-      <p class="sub" id="greetSub">double-click an icon — or open the terminal and type <span class="kbd">help</span></p>
+      <p class="sub" id="greetSub">double-click an icon, or open the terminal and type <span class="kbd">help</span></p>
     </div>
 
     <div class="icons" id="iconGrid"></div>
@@ -380,9 +380,9 @@
       <div class="content">
         <h2>Taylor Hurst</h2>
         <p class="lede">Denver, Colorado · investor &amp; occasional builder</p>
-        <p>I'm a <b>Partner at Konvoy</b>, investing across deep tech, gaming, critical industries, open-source software, and hardware — the stuff that's hard to build and matters when it works.</p>
+        <p>I'm a <b>Partner at Konvoy</b>, investing across deep tech, gaming, critical industries, open-source software, and hardware, the stuff that's hard to build and matters when it works.</p>
         <p>I grew up in Maryland, which explains the lifelong Washington sports habit, and graduated from <b>Arizona State</b> (go Sun Devils) before landing in Denver.</p>
-        <p>Off the clock: chasing a running PR, losing a board game I swore I'd win, or on a plane to the next trip with friends. I like understanding how things work — history and new technology in roughly equal measure.</p>
+        <p>Off the clock: chasing a running PR, losing a board game I swore I'd win, or on a plane to the next trip with friends. I like understanding how things work: history and new technology in roughly equal measure.</p>
         <div class="links">
           <a class="chip" href="https://x.com/taylorbhurst" target="_blank" rel="noopener">𝕏 @taylorbhurst</a>
           <a class="chip" href="https://instagram.com/taylorhurst23" target="_blank" rel="noopener">◎ @taylorhurst23</a>
@@ -402,9 +402,9 @@
           </div>
           <div class="body">
             <ul>
-              <li>Turns an open, connected curriculum of ~1,590 micro-topics into a clear learning path — every idea mastered (90%+) before the next begins.</li>
+              <li>Turns an open, connected curriculum of ~1,590 micro-topics into a clear learning path, with every idea mastered (90%+) before the next begins.</li>
               <li>Personalized AI tutoring: lessons, tests and remediation shaped to how each child learns.</li>
-              <li>Built on learning science — mastery learning, active recall, spaced practice — with the receipts cited.</li>
+              <li>Built on learning science (mastery learning, active recall, spaced practice), with the receipts cited.</li>
               <li>Installable PWA, works offline, year-end printable reports.</li>
             </ul>
             <p class="stack">Stack: vanilla JS + HTML/CSS, Puter.js for auth/storage/AI, no build step.</p>
@@ -420,7 +420,7 @@
     <section class="window" id="win-races" data-title="./races">
       <div class="content">
         <h2>./races</h2>
-        <p class="lede">Start lines, past and future — auto-sorted by date.</p>
+        <p class="lede">Start lines, past and future, auto-sorted by date.</p>
         <div class="stats" id="raceStats"></div>
         <div id="raceList"></div>
         <a class="strava" href="https://strava.app.link/IpmwjqXom8b" target="_blank" rel="noopener">
@@ -434,7 +434,7 @@
       <div class="content">
         <h2>games</h2>
         <p class="lede">Board nights, card tables, and the occasional heated rules debate.</p>
-        <p style="font-size:12.5px"><b>Beat the Deck</b> — the one my friends and I always play out. Pick a face-up card, call <b>higher</b> or <b>lower</b> than it, and clear the whole deck before all nine piles flip. A tie flips the pile.</p>
+        <p style="font-size:12.5px"><b>Beat the Deck</b> is the one my friends and I always play out. Pick a face-up card, call <b>higher</b> or <b>lower</b> than it, and clear the whole deck before all nine piles flip. A tie flips the pile.</p>
         <div class="btd" id="btd">
           <div class="btd-grid" id="btdGrid"></div>
           <div class="btd-ctrls">
@@ -454,7 +454,8 @@
         <div class="flightmap" id="flightMap"></div>
         <div class="stats" id="flightStats"></div>
         <p class="muted" style="font-size:11.5px;margin-top:10px">Hover a dot for the airport &amp; flight count.</p>
-        <p style="margin:14px 0 0">Most of my favorite memories are a group of friends and a reason to get together — a trip, a table, or a mic nobody should've handed me.</p>
+        <p style="margin:14px 0 0">Most of my favorite memories are a group of friends and a reason to get together: a trip, a table, or a mic nobody should've handed me.</p>
+        <p style="margin:10px 0 0">My top three at the mic: <b>Drops of Jupiter</b> (Train), <b>3AM</b> (Matchbox Twenty), and <b>How You Remind Me</b> (Nickelback).</p>
         <button class="play" id="micBtn">🎤 karaoke roulette</button>
         <div class="draw" id="micOut"></div>
       </div>
@@ -471,7 +472,7 @@
       </div>
     </section>
 
-    <section class="window" id="win-terminal" data-title="terminal — zsh">
+    <section class="window" id="win-terminal" data-title="terminal · zsh">
       <div class="content">
         <div class="term" id="termOut"></div>
       </div>
@@ -618,7 +619,7 @@
       over = true; sel = -1; controls();
       if (beaten > best) best = beaten;
       if (won) { wins++; elMsg.className = "bj-msg win"; elMsg.innerHTML = "You beat the deck! 🎉 Cleared all 43 cards."; }
-      else { elMsg.className = "bj-msg lose"; elMsg.innerHTML = "All piles down — you cleared <b>" + beaten + "</b>. New deck?"; }
+      else { elMsg.className = "bj-msg lose"; elMsg.innerHTML = "All piles down. You cleared <b>" + beaten + "</b>. New deck?"; }
       render(); score();
     }
     function guess(dir) {
@@ -627,20 +628,20 @@
       if (d.r === "A" && aceHigh === null) aceHigh = (dir === "higher");
       var dv = value(d), fv = value(p.card);
       var correct = dir === "higher" ? dv > fv : dv < fv;
-      if (correct) { p.card = d; beaten++; elMsg.className = "bj-msg win"; elMsg.innerHTML = "Drew <b>" + d.r + d.s + "</b> — right, keep going."; }
-      else { p.dead = true; elMsg.className = "bj-msg lose"; elMsg.innerHTML = "Drew <b>" + d.r + d.s + "</b> — that pile flips."; }
+      if (correct) { p.card = d; beaten++; elMsg.className = "bj-msg win"; elMsg.innerHTML = "Drew <b>" + d.r + d.s + "</b>. Right, keep going."; }
+      else { p.dead = true; elMsg.className = "bj-msg lose"; elMsg.innerHTML = "Drew <b>" + d.r + d.s + "</b>. That pile flips."; }
       sel = -1;
       var alive = piles.filter(function (q) { return !q.dead; }).length;
       if (alive === 0) { endGame(false); return; }
       if (deck.length === 0) { endGame(true); return; }
-      if (!selectable()) { over = true; controls(); if (beaten > best) best = beaten; elMsg.className = "bj-msg push"; elMsg.innerHTML = "Frozen out — only locked Aces left. Cleared <b>" + beaten + "</b>."; render(); score(); return; }
+      if (!selectable()) { over = true; controls(); if (beaten > best) best = beaten; elMsg.className = "bj-msg push"; elMsg.innerHTML = "Frozen out: only locked Aces left. Cleared <b>" + beaten + "</b>."; render(); score(); return; }
       render(); controls(); score();
     }
     elGrid.addEventListener("click", function (e) {
       var cell = e.target.closest(".pile"); if (!cell || over) return;
       var i = +cell.getAttribute("data-i"); if (isNaN(i)) return;
       var p = piles[i]; if (!p || p.dead) return;
-      if (lockedAce(p.card)) { elMsg.className = "bj-msg push"; elMsg.innerHTML = "That Ace is locked — wait for another Ace to set high or low."; return; }
+      if (lockedAce(p.card)) { elMsg.className = "bj-msg push"; elMsg.innerHTML = "That Ace is locked. Wait for another Ace to set high or low."; return; }
       sel = i; render(); controls();
     });
     bHi.addEventListener("click", function () { guess("higher"); });
@@ -650,9 +651,10 @@
   })();
 
   /* ---------- travels: karaoke roulette ---------- */
-  var kara = ["Mr. Brightside — The Killers","Don't Stop Believin' — Journey","Shout — Isley Brothers",
-    "Africa — Toto","Love Story — Taylor Swift","Bohemian Rhapsody — Queen","Dancing Queen — ABBA",
-    "Sweet Caroline — Neil Diamond","I Want It That Way — Backstreet Boys","Piano Man — Billy Joel"];
+  var kara = ["Drops of Jupiter · Train","3AM · Matchbox Twenty","How You Remind Me · Nickelback",
+    "Mr. Brightside · The Killers","Don't Stop Believin' · Journey","Shout · Isley Brothers",
+    "Africa · Toto","Love Story · Taylor Swift","Bohemian Rhapsody · Queen","Dancing Queen · ABBA",
+    "Sweet Caroline · Neil Diamond","I Want It That Way · Backstreet Boys","Piano Man · Billy Joel"];
   document.getElementById("micBtn").addEventListener("click", function () {
     document.getElementById("micOut").innerHTML = 'Tonight you\'re singing: <b>' + kara[Math.floor(Math.random()*kara.length)] + '</b> 🎶';
   });
@@ -747,7 +749,7 @@
       var ap = AIRPORTS[code], p = proj(ap.lon, ap.lat), cnt = nodeCount[code];
       var r = Math.min(3 + Math.sqrt(cnt) * 1.1, 13);
       var cls = code === "DEN" ? "fm-node hub" : (ap.cc !== "US" ? "fm-node intl" : "fm-node");
-      svg += '<circle class="' + cls + '" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + r.toFixed(1) + '"><title>' + code + ' · ' + ap.city + ' — ' + cnt + ' flights</title></circle>';
+      svg += '<circle class="' + cls + '" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + r.toFixed(1) + '"><title>' + code + ' · ' + ap.city + ' · ' + cnt + ' flights</title></circle>';
       if (code === "DEN" || ap.cc !== "US" || cnt >= 5) {
         var right = p[0] > W - 92;
         labels += '<text class="fm-label' + (code === "DEN" ? " hub" : "") + '" x="' + (p[0] + (right ? -r - 3 : r + 3)).toFixed(1) + '" y="' + (p[1] + 3).toFixed(1) + '" text-anchor="' + (right ? "end" : "start") + '">' + code + '</text>';
@@ -770,7 +772,7 @@
       '<div class="stat"><div class="n">' + Object.keys(countries).length + '</div><div class="l">countries</div></div>';
     var note = document.createElement("p");
     note.className = "muted"; note.style.cssText = "font-size:11.5px;margin:2px 0 0";
-    note.innerHTML = 'Most-flown: <b>' + (topKey ? topKey.replace("-", " ⇄ ") : "—") + '</b> (' + maxRoute + '×). Longest haul: Denver ✈ Europe.';
+    note.innerHTML = 'Most-flown: <b>' + (topKey ? topKey.replace("-", " ⇄ ") : "none") + '</b> (' + maxRoute + '×). Longest haul: Denver ✈ Europe.';
     document.getElementById("flightStats").after(note);
   })();
 
@@ -1145,7 +1147,7 @@
     ' | |_ __ _ _  _ | | ___  _ _ | |_  _  _ _ _ __| |_ ',
     " |  _/ _` | || || |/ _ \\| '_||  _|| || | '_(_-<  _|",
     '  \\__\\__,_|\\_, ||_|\\___/|_|   \\__| \\_,_|_| /__/\\__|',
-    '           |__/     taylorhurst.os — v1.0'
+    '           |__/     taylorhurst.os · v1.0'
   ].join("\n");
   pr('<span class="d">' + BANNER + '</span>');
   pr('<span class="muted2">type </span><span class="u">help</span><span class="muted2"> to get started</span>');
@@ -1168,19 +1170,19 @@
         '  <span class="u">clear</span>      clear the screen\n' +
         '  <span class="muted2">...a few things aren\'t on this list. poke around.</span>';
     },
-    about: function () { return "Taylor Hurst — Partner at Konvoy (deep tech, gaming, critical\nindustries, OSS, hardware). Maryland-raised, ASU grad, Denver-based.\nRuns races, builds the occasional app, learns history + new tech\nfor fun."; },
-    whoami: function () { return "taylor hurst · denver, co · @taylorbhurst"; },
+    about: function () { return "Taylor Hurst, Partner at Konvoy (deep tech, gaming, critical\nindustries, OSS, hardware). Maryland-raised, ASU grad, Denver-based.\nRuns races, builds the occasional app, learns history + new tech\nfor fun."; },
+    whoami: function () { return "taylor hurst · partner at konvoy · denver, co\nmaryland-raised · asu grad · @taylorbhurst"; },
     projects: function () { openWin("projects"); return "opening projects... Homestead → github.com/tbh-23/Homestead"; },
     races: function () { openWin("races"); return "2x half marathon + 1 hyrox in 2026. opening ./races"; },
-    games: function () { openWin("games"); return "opening games — lay out Beat the Deck."; },
+    games: function () { openWin("games"); return "opening games: lay out Beat the Deck."; },
     btd: function () { return CMDS.games(); },
-    travels: function () { openWin("travels"); return "opening travels — " + FLIGHTS.length + " flights mapped. spin the karaoke roulette too."; },
+    travels: function () { openWin("travels"); return "opening travels: " + FLIGHTS.length + " flights mapped. spin the karaoke roulette too."; },
     flights: function () { return CMDS.travels(); },
     map: function () { return CMDS.travels(); },
-    writing: function () { openWin("writing"); return "opening ~/writing — 10 essays on deep tech & AI."; },
+    writing: function () { openWin("writing"); return "opening ~/writing: 10 essays on deep tech & AI."; },
     social: function () { return 'x:  <a href="https://x.com/taylorbhurst" target="_blank" rel="noopener">@taylorbhurst</a>\ninsta: <a href="https://instagram.com/taylorhurst23" target="_blank" rel="noopener">@taylorhurst23</a>\nstrava: <a href="https://strava.app.link/IpmwjqXom8b" target="_blank" rel="noopener">zone 4 run club</a>'; },
-    strava: function () { return 'the zone 4 run club — live and unfiltered:\n<a href="https://strava.app.link/IpmwjqXom8b" target="_blank" rel="noopener">strava.app.link/…</a>\nmediocre times, proudly posted. 💈'; },
-    time: function () { return "it's " + denverTime() + " in " + city + " — mood: " + curPeriod; },
+    strava: function () { return 'the zone 4 run club, live and unfiltered:\n<a href="https://strava.app.link/IpmwjqXom8b" target="_blank" rel="noopener">strava.app.link/…</a>\nmediocre times, proudly posted. 💈'; },
+    time: function () { return "it's " + denverTime() + " in " + city + " · mood: " + curPeriod; },
     sun: function () { var s = sunTimes(new Date()); return "denver today: sunrise " + denverClock(s.rise) + " · sunset " + denverClock(s.set) + "\nalpenglow runs ~75 min before sunset to ~40 min after."; },
     ls: function () { return APPS.map(function(a){return a.cap;}).join("   "); },
     clear: function () { out.innerHTML = ""; return ""; },
@@ -1191,7 +1193,7 @@
       args = (args || "").toLowerCase();
       if (args.indexOf("pitch") > -1 || args.indexOf("invest") > -1 || args.indexOf("raise") > -1)
         return "building in deep tech, gaming, critical industries, OSS or hardware?\n→ <a href=\"https://konvoy.vc\" target=\"_blank\" rel=\"noopener\">konvoy.vc</a> or <a href=\"https://x.com/taylorbhurst\" target=\"_blank\" rel=\"noopener\">dm me</a>. the best founders skip the sudo.";
-      if (args.indexOf("hire") > -1) return "you’ve got it backwards — i’m the one hunting for founders. try <span class=\"u\">sudo pitch-me</span>.";
+      if (args.indexOf("hire") > -1) return "you’ve got it backwards. i’m the one hunting for founders. try <span class=\"u\">sudo pitch-me</span>.";
       return "<span class=\"e\">taylor is not in the sudoers file. this incident will be reported.</span> 😏";
     },
     konvoy: function () { return 'early-stage fund for deep tech, gaming, critical industries, OSS\nand hardware. find more at <a href="https://konvoy.vc" target="_blank" rel="noopener">konvoy.vc</a>.'; },
@@ -1200,7 +1202,7 @@
       var id = (args||"").trim();
       var hit = APPS.filter(function(a){ return a.id===id || a.cap===id; })[0];
       if (hit) { openWin(hit.id); return "opening " + hit.cap + "..."; }
-      return '<span class="e">open: unknown app "' + (id||"") + '"</span> — try: ' + APPS.map(function(a){return a.cap;}).join(", ");
+      return '<span class="e">open: unknown app "' + (id||"") + '"</span> · try: ' + APPS.map(function(a){return a.cap;}).join(", ");
     }
   };
   function run(raw) {
@@ -1210,7 +1212,7 @@
     pr('<span class="u">taylor@os ~ %</span> ' + raw.replace(/</g,"&lt;"));
     if (!cmd) return;
     if (CMDS[cmd]) { var r = CMDS[cmd](args); if (r) pr(r); }
-    else pr('<span class="e">zsh: command not found: ' + cmd.replace(/</g,"&lt;") + '</span> — type <span class="u">help</span>');
+    else pr('<span class="e">zsh: command not found: ' + cmd.replace(/</g,"&lt;") + '</span> · type <span class="u">help</span>');
   }
   input.addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
