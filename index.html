@@ -278,23 +278,35 @@
   .card-face { font-family: var(--display); font-size: 15px; font-weight: 700; }
   .card-red { color: #d23b3b; } .card-black { color: var(--ink); }
   /* beat the deck */
-  .btd { margin-top: 12px; background: linear-gradient(180deg,#0e2a1f,#0b1f18); border: 1px solid #1d3b2e; border-radius: 12px; padding: 14px; color: #eafff4; }
-  .btd-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 280px; margin: 0 auto 12px; }
-  .pile { position: relative; aspect-ratio: 3 / 4; border-radius: 8px; background: #f6f8ff; border: 2px solid transparent; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 700; font-size: 20px; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.3); user-select: none; transition: transform .1s, border-color .1s; }
+  /* the whole game fits in the window without scrolling: card height (--ch) follows the screen height */
+  #win-games { width: min(620px, 94vw); }
+  #win-games .lede { margin-bottom: 6px; }
+  #win-games .btd-rules { font-size: 12.5px; line-height: 1.5; margin: 0 0 12px; }
+  .btd { --ch: clamp(60px, calc((82vh - 290px) / 3), 112px);
+    display: flex; align-items: center; justify-content: center; gap: 20px;
+    background: linear-gradient(180deg,#0e2a1f,#0b1f18); border: 1px solid #1d3b2e; border-radius: 12px; padding: 14px; color: #eafff4; }
+  .btd-grid { display: grid; grid-template-columns: repeat(3, calc(var(--ch) * .72)); grid-auto-rows: var(--ch); gap: 8px; flex: none; }
+  .btd-side { display: flex; flex-direction: column; gap: 8px; width: 196px; }
+  @media (max-height: 720px) { .btd-keys { display: none; } }
+  .btd-ctrls { display: flex; flex-direction: column; gap: 8px; }
+  .btd-foot { display: flex; flex-direction: column; gap: 6px; }
+  .btd-keys { font-size: 10.5px; color: #6fae92; text-align: center; }
+  @media (hover: none) { .btd-keys { display: none; } }
+  .pile { position: relative; border-radius: 8px; background: #f6f8ff; border: 2px solid transparent; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 700; font-size: calc(var(--ch) * .2); cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.3); user-select: none; transition: transform .1s, border-color .1s, box-shadow .1s; }
   .pile.red { color: #d23b3b; } .pile.black { color: #16203a; }
   .pile:hover:not(.dead) { transform: translateY(-2px); }
-  .pile.sel { border-color: #ffcf6b; }
+  .pile.sel { border-color: #ffcf6b; transform: translateY(-3px); box-shadow: 0 0 0 2px #ffcf6b, 0 6px 14px rgba(0,0,0,.4); }
   .pile.locked { cursor: not-allowed; opacity: .9; }
   .pile.locked::after { content: "\1F512"; position: absolute; bottom: 2px; right: 3px; font-size: 9px; opacity: .7; }
   .pile.dead { background: repeating-linear-gradient(45deg,#13324a,#13324a 7px,#0f2a40 7px,#0f2a40 14px); color: transparent; cursor: default; border-color: transparent; box-shadow: none; }
-  .btd-ctrls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 4px; }
-  .bj-msg { font-size: 13px; min-height: 20px; margin: 8px 0 6px; color: #d8ffe9; text-align: center; }
+  .bj-msg { font-size: 12.5px; line-height: 1.4; min-height: 36px; margin: 0; color: #d8ffe9; text-align: center; }
   .bj-msg.win { color: #7df0a6; } .bj-msg.lose { color: #ff9b9b; } .bj-msg.push { color: #ffd98f; }
   .bj-btn { cursor: pointer; font-family: var(--mono); font-size: 12.5px; padding: 8px 14px; border-radius: 8px; border: 1px solid #2e5c47; background: #143a2b; color: #eafff4; }
   .bj-btn:hover:not(:disabled) { border-color: #7df0a6; }
   .bj-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .bj-btn.big { font-size: 14px; padding: 11px 14px; }
   .bj-btn:disabled { opacity: .4; cursor: not-allowed; }
-  .bj-score { margin-top: 8px; font-size: 11.5px; color: #8fd9b6; font-variant-numeric: tabular-nums; text-align: center; }
+  .bj-score { font-size: 11.5px; line-height: 1.45; color: #8fd9b6; font-variant-numeric: tabular-nums; text-align: center; }
 
   .project {
     border: 1px solid var(--panel-edge); border-radius: 10px; overflow: hidden; margin-top: 4px;
@@ -339,6 +351,18 @@
     .window.open { left: 50% !important; top: 50% !important; transform: translate(-50%,-50%); width: 94vw; max-height: 80%; }
     .window.open.max { max-height: calc(100% - 16px); }
     .titlebar { cursor: default; }
+    /* phone: cards on top, one row of buttons underneath */
+    #win-games .lede { display: none; }
+    #win-games.open { max-height: 94%; }
+    #win-games .content { padding: 14px 16px 16px; }
+    .btd { flex-direction: column; gap: 10px; padding: 12px;
+      --ch: clamp(52px, min(calc((94vh - 430px) / 3), calc((94vw - 90px) / 2.16)), 104px); }
+    .btd-side { width: 100%; gap: 6px; }
+    .btd-ctrls { flex-direction: row; }
+    .btd-ctrls .bj-btn { flex: 1; }
+    .bj-msg { min-height: 35px; }
+    .btd-foot { flex-direction: row; align-items: center; justify-content: space-between; gap: 10px; }
+    .btd-foot .bj-score { text-align: right; }
   }
 </style>
 </head>
@@ -440,16 +464,21 @@
       <div class="content">
         <h2>games</h2>
         <p class="lede">Board nights, card tables, and the occasional heated rules debate.</p>
-        <p style="font-size:12.5px"><b>Beat the Deck</b> is the one my friends and I always play out. Pick a face-up card, call <b>higher</b> or <b>lower</b> than it, and clear the whole deck before all nine piles flip. A tie flips the pile.</p>
+        <p class="btd-rules"><b>Beat the Deck</b> is the one my friends and I always play out. Pick a face-up card, call <b>higher</b> or <b>lower</b> than it, and clear the whole deck before all nine piles flip. A tie flips the pile.</p>
         <div class="btd" id="btd">
           <div class="btd-grid" id="btdGrid"></div>
-          <div class="btd-ctrls">
-            <button class="bj-btn" id="btdHigher" disabled>▲ Higher</button>
-            <button class="bj-btn" id="btdLower" disabled>▼ Lower</button>
-            <button class="bj-btn primary" id="btdNew">New deck</button>
+          <div class="btd-side">
+            <div class="btd-ctrls">
+              <button class="bj-btn big" id="btdHigher" disabled>▲ Higher</button>
+              <button class="bj-btn big" id="btdLower" disabled>▼ Lower</button>
+            </div>
+            <div class="bj-msg" id="btdMsg"></div>
+            <div class="btd-foot">
+              <button class="bj-btn primary" id="btdNew">New deck</button>
+              <div class="bj-score" id="btdScore"></div>
+            </div>
+            <div class="btd-keys">keys: 1-9 pick · ↑ ↓ call · N new deck</div>
           </div>
-          <div class="bj-msg" id="btdMsg">Press <b>New deck</b> to start.</div>
-          <div class="bj-score" id="btdScore"></div>
         </div>
       </div>
     </section>
@@ -525,6 +554,8 @@
       if (window.innerWidth > 560) {
         var cx = Math.max(16, (window.innerWidth - w.offsetWidth) / 2 + (offset % 5) * 26 - 52);
         var cy = Math.max(70, 96 + (offset % 5) * 22);
+        // never let the window hang off the bottom of the screen
+        cy = Math.max(40, Math.min(cy, window.innerHeight - w.offsetHeight - 12));
         w.style.left = cx + "px"; w.style.top = cy + "px";
         offset++;
       }
@@ -612,7 +643,7 @@
     function controls() { var can = !over && sel > -1; bHi.disabled = !can; bLo.disabled = !can; }
     function score() {
       var alive = piles.filter(function (p) { return !p.dead; }).length;
-      elScore.textContent = "Deck " + deck.length + "  ·  Piles " + alive + "/9  ·  Best run " + best + (wins ? "  ·  Wins " + wins : "");
+      elScore.innerHTML = "<b>" + deck.length + "</b> cards left · " + alive + "/9 piles<br>best run " + best + (wins ? " · wins " + wins : "");
       try { localStorage.setItem("btd-score", JSON.stringify({ best: best, wins: wins })); } catch (e) {}
     }
     function deal() {
@@ -643,17 +674,36 @@
       if (!selectable()) { over = true; controls(); if (beaten > best) best = beaten; elMsg.className = "bj-msg push"; elMsg.innerHTML = "Frozen out: only locked Aces left. Cleared <b>" + beaten + "</b>."; render(); score(); return; }
       render(); controls(); score();
     }
-    elGrid.addEventListener("click", function (e) {
-      var cell = e.target.closest(".pile"); if (!cell || over) return;
-      var i = +cell.getAttribute("data-i"); if (isNaN(i)) return;
+    function pick(i) {
+      if (over) return;
       var p = piles[i]; if (!p || p.dead) return;
       if (lockedAce(p.card)) { elMsg.className = "bj-msg push"; elMsg.innerHTML = "That Ace is locked. Wait for another Ace to set high or low."; return; }
       sel = i; render(); controls();
+      elMsg.className = "bj-msg"; elMsg.innerHTML = "<b>" + p.card.r + p.card.s + "</b> picked. Higher or lower?";
+    }
+    elGrid.addEventListener("click", function (e) {
+      var cell = e.target.closest(".pile"); if (!cell) return;
+      var i = +cell.getAttribute("data-i"); if (!isNaN(i)) pick(i);
     });
     bHi.addEventListener("click", function () { guess("higher"); });
     bLo.addEventListener("click", function () { guess("lower"); });
     bNew.addEventListener("click", deal);
-    score();
+    /* keyboard: only while the games window is open and in front, and not while typing */
+    document.addEventListener("keydown", function (e) {
+      var w = document.getElementById("win-games");
+      if (!w.classList.contains("open") || w.classList.contains("shaded") || e.metaKey || e.ctrlKey || e.altKey) return;
+      var t = e.target; if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+      var front = Array.prototype.reduce.call(document.querySelectorAll(".window.open"), function (a, b) { return (+b.style.zIndex || 0) > (+a.style.zIndex || 0) ? b : a; });
+      if (front !== w) return;
+      var k = e.key;
+      if (k >= "1" && k <= "9") pick(+k - 1);
+      else if (k === "ArrowUp" || k === "h" || k === "H") guess("higher");
+      else if (k === "ArrowDown" || k === "l" || k === "L") guess("lower");
+      else if (k === "n" || k === "N") deal();
+      else return;
+      e.preventDefault();
+    });
+    deal();
   })();
 
   /* ---------- travels: karaoke roulette ---------- */
