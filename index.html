@@ -43,6 +43,7 @@
     --mtn-far: #2e2450;
     --mtn-near: #16112b;
     --mtn-rim: #8a63b8;
+    --snow: #c4bce3;
   }
   * { box-sizing: border-box; }
   html, body { height: 100%; margin: 0; }
@@ -75,6 +76,8 @@
   .mtn-far { fill: var(--mtn-far); transition: fill 1.4s ease; }
   .mtn-near { fill: var(--mtn-near); transition: fill 1.4s ease; }
   .mtn-rim { fill: none; stroke: var(--mtn-rim); stroke-width: 2; opacity: .85; vector-effect: non-scaling-stroke; transition: stroke 1.4s ease; }
+  .mtn-snow { fill: var(--snow); opacity: 0; transition: opacity 1.2s ease, fill 1.4s ease; }
+  .mountains.snowy .mtn-snow { opacity: .92; }
   @media (prefers-reduced-motion: no-preference) {
     .star { animation: tw 4s ease-in-out infinite; }
     @keyframes tw { 0%,100%{opacity:.25} 50%{opacity:.9} }
@@ -340,6 +343,7 @@
     <div class="stars" id="stars"></div>
     <svg class="mountains" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true">
       <path class="mtn-far" d="M0 200L0 122L70 104L130 116L210 78L280 104L340 66L410 98L480 84L560 42L630 88L700 72L780 102L860 52L930 90L1000 76L1070 106L1140 84L1200 96L1200 200Z"/>
+      <path class="mtn-snow" id="snowcaps" d=""/>
       <path class="mtn-rim" d="M0 122L70 104L130 116L210 78L280 104L340 66L410 98L480 84L560 42L630 88L700 72L780 102L860 52L930 90L1000 76L1070 106L1140 84L1200 96"/>
       <path class="mtn-near" d="M0 200L0 152L90 136L170 150L250 128L340 152L420 138L520 156L610 132L700 150L790 140L880 158L980 134L1070 152L1150 140L1200 148L1200 200Z"/>
     </svg>
@@ -949,6 +953,7 @@
     up.concat(past).forEach(function (r) {
       var name = r.url ? '<a href="' + r.url + '" target="_blank" rel="noopener">' + r.nm + '</a>' : r.nm;
       var when = r.approx ? ("~" + r._d.getFullYear()) : (mon[r._d.getMonth()] + " " + r._d.getDate() + ", " + r._d.getFullYear());
+      if (r.time && !r._up) when += " · " + r.time;   // finish time, filled in from results emails
       html += '<div class="race-row"><span class="rl"><span class="tag">' + r.dist + '</span>' +
               '<span class="nm">' + name + ' · ' + r.place + '</span></span>' +
               '<span class="rr"><span class="rdate">' + when + '</span>' +
@@ -973,23 +978,52 @@
     catch (e) { return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }); }
   }
 
-  function period(h) {
-    if (h >= 5 && h < 8)  return "dawn";
-    if (h >= 8 && h < 17) return "day";
-    if (h >= 17 && h < 20) return "dusk";
+  function denverMinutes(d) {
+    try {
+      var s = (d || new Date()).toLocaleString("en-US", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false }).split(":");
+      return (parseInt(s[0], 10) % 24) * 60 + parseInt(s[1], 10);
+    } catch (e) { var x = d || new Date(); return x.getHours() * 60 + x.getMinutes(); }
+  }
+  function denverClock(d) {
+    try { return d.toLocaleTimeString("en-US", { timeZone: TZ, hour: "numeric", minute: "2-digit" }); }
+    catch (e) { return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }); }
+  }
+  /* Denver sunrise/sunset from its coordinates (standard sunrise equation;
+     matches Open-Meteo to the minute and works even when offline). */
+  function sunTimes(now) {
+    var rad = Math.PI / 180, lat = 39.7392, lon = -104.9903;
+    var n = Math.round(now.getTime() / 86400000 + 2440587.5 - 2451545.0 + 0.0008);
+    var Js = n - lon / 360;
+    var M = (357.5291 + 0.98560028 * Js) % 360;
+    var C = 1.9148 * Math.sin(M * rad) + 0.02 * Math.sin(2 * M * rad) + 0.0003 * Math.sin(3 * M * rad);
+    var L = (M + C + 180 + 102.9372) % 360;
+    var Jt = 2451545.0 + Js + 0.0053 * Math.sin(M * rad) - 0.0069 * Math.sin(2 * L * rad);
+    var sd = Math.sin(L * rad) * Math.sin(23.4397 * rad), cd = Math.cos(Math.asin(sd));
+    var w = Math.acos((Math.sin(-0.833 * rad) - Math.sin(lat * rad) * sd) / (Math.cos(lat * rad) * cd)) / rad;
+    var toDate = function (J) { return new Date((J - 2440587.5) * 86400000); };
+    return { rise: toDate(Jt - w / 360), set: toDate(Jt + w / 360) };
+  }
+  var sun = sunTimes(new Date());
+  // dawn: 45 min before sunrise → 1 h after; dusk (alpenglow): 75 min before sunset → 40 min after
+  function period(m) {
+    sun = sunTimes(new Date());
+    var r = denverMinutes(sun.rise), s = denverMinutes(sun.set);
+    if (m >= r - 45 && m < r + 60) return "dawn";
+    if (m >= r + 60 && m < s - 75) return "day";
+    if (m >= s - 75 && m < s + 40) return "dusk";
     return "night";
   }
   /* alpenglow palette: rose, peach and violet light on the Front Range */
   var MOODS = {
-    dawn:  { top:"#6d68a6", bot:"#f4b0a0", orb:"#fff0d8", glow:"rgba(255,184,160,.55)", star:0,   far:"#8c6d9f", near:"#4a3966", rim:"#ffc2b0", glyph:"🌅", hi:"Good morning", sub:"first light on the Front Range" },
-    day:   { top:"#8a9cd4", bot:"#f5cbb8", orb:"#fffbea", glow:"rgba(255,224,192,.5)",  star:0,   far:"#9a8eb8", near:"#5d5380", rim:"#ffd9c8", glyph:"☀️", hi:"Good afternoon", sub:"bluebird day in the Rockies" },
-    dusk:  { top:"#3b3878", bot:"#ec868c", orb:"#ffc7a2", glow:"rgba(255,138,128,.55)", star:.35, far:"#6a4a7e", near:"#2e2446", rim:"#ff9fa0", glyph:"🌄", hi:"Good evening", sub:"alpenglow on the peaks" },
-    night: { top:"#141433", bot:"#3e2a5c", orb:"#e4dcff", glow:"rgba(180,150,230,.4)",  star:1,   far:"#2e2450", near:"#16112b", rim:"#8a63b8", glyph:"🌙", hi:"Good evening", sub:"stars out over the Rockies" }
+    dawn:  { top:"#6d68a6", bot:"#f4b0a0", orb:"#fff0d8", glow:"rgba(255,184,160,.55)", star:0,   far:"#8c6d9f", near:"#4a3966", rim:"#ffc2b0", snow:"#ffe3dc", glyph:"🌅", hi:"Good morning", sub:"first light on the Front Range" },
+    day:   { top:"#8a9cd4", bot:"#f5cbb8", orb:"#fffbea", glow:"rgba(255,224,192,.5)",  star:0,   far:"#9a8eb8", near:"#5d5380", rim:"#ffd9c8", snow:"#fbf8ff", glyph:"☀️", hi:"Good afternoon", sub:"bluebird day in the Rockies" },
+    dusk:  { top:"#3b3878", bot:"#ec868c", orb:"#ffc7a2", glow:"rgba(255,138,128,.55)", star:.35, far:"#6a4a7e", near:"#2e2446", rim:"#ff9fa0", snow:"#ffd0d4", glyph:"🌄", hi:"Good evening", sub:"alpenglow on the peaks" },
+    night: { top:"#141433", bot:"#3e2a5c", orb:"#e4dcff", glow:"rgba(180,150,230,.4)",  star:1,   far:"#2e2450", near:"#16112b", rim:"#8a63b8", snow:"#c4bce3", glyph:"🌙", hi:"Good evening", sub:"stars out over the Rockies" }
   };
   var rootStyle = document.documentElement.style;
   var curPeriod = null;
-  function applyMood(h) {
-    var p = period(h);
+  function applyMood(mins) {
+    var p = period(mins);
     if (p === curPeriod) return;
     curPeriod = p;
     var m = MOODS[p];
@@ -1001,12 +1035,15 @@
     rootStyle.setProperty("--mtn-far", m.far);
     rootStyle.setProperty("--mtn-near", m.near);
     rootStyle.setProperty("--mtn-rim", m.rim);
+    rootStyle.setProperty("--snow", m.snow);
     if (!haveWx) document.getElementById("moodGlyph").textContent = m.glyph;
     document.getElementById("greetHi").textContent = m.hi + " from Denver.";
-    document.getElementById("greetSub").innerHTML = m.sub + ' &middot; it’s <span id="localt"></span> in the Mile High City';
+    var sunNote = (p === "day" || p === "dusk") ? "sunset " + denverClock(sun.set) : "sunrise " + denverClock(sun.rise);
+    document.getElementById("greetSub").innerHTML = m.sub + ' &middot; ' + sunNote + ' &middot; it’s <span id="localt"></span> in the Mile High City';
   }
   function tick() {
-    applyMood(denverHour());
+    applyMood(denverMinutes());
+    updateSnow();
     var t = denverTime();
     document.getElementById("clock").textContent = t;
     var lt = document.getElementById("localt"); if (lt) lt.textContent = t;
@@ -1022,6 +1059,32 @@
     }
     box.innerHTML = html;
   })();
+
+  /* ---------- snowcaps on the Front Range (snowing in Denver, or Nov–Apr) ---------- */
+  var RIDGE = [[0,122],[70,104],[130,116],[210,78],[280,104],[340,66],[410,98],[480,84],[560,42],[630,88],[700,72],[780,102],[860,52],[930,90],[1000,76],[1070,106],[1140,84],[1200,96]];
+  var wxNow = null;
+  (function buildSnowcaps() {
+    var d = "";
+    for (var i = 1; i < RIDGE.length - 1; i++) {
+      var A = RIDGE[i - 1], P = RIDGE[i], B = RIDGE[i + 1];
+      if (!(P[1] < A[1] && P[1] < B[1]) || P[1] > 90) continue;      // only the taller summits
+      var depth = (100 - P[1]) * 0.45 + 7;
+      var ta = Math.min(depth / (A[1] - P[1]), 0.85), tb = Math.min(depth / (B[1] - P[1]), 0.85);
+      var Lp = [P[0] + (A[0] - P[0]) * ta, P[1] + (A[1] - P[1]) * ta], Rp = [P[0] + (B[0] - P[0]) * tb, P[1] + (B[1] - P[1]) * tb];
+      var at = function (t, dy) { return (Lp[0] + (Rp[0] - Lp[0]) * t).toFixed(1) + " " + (Lp[1] + (Rp[1] - Lp[1]) * t + dy).toFixed(1); };
+      d += "M" + P[0] + " " + P[1] + "L" + Lp[0].toFixed(1) + " " + Lp[1].toFixed(1) +
+           "L" + at(.3, -5) + "L" + at(.5, 2) + "L" + at(.7, -4) + "L" + Rp[0].toFixed(1) + " " + Rp[1].toFixed(1) + "Z";
+    }
+    document.getElementById("snowcaps").setAttribute("d", d);
+  })();
+  function updateSnow() {
+    var mo;
+    try { mo = parseInt(new Date().toLocaleString("en-US", { timeZone: "America/Denver", month: "numeric" }), 10); }
+    catch (e) { mo = new Date().getMonth() + 1; }
+    var on = wxNow === "snow" || mo >= 11 || mo <= 4;
+    document.querySelector(".mountains").classList.toggle("snowy", on);
+  }
+  updateSnow();
 
   /* ---------- live Denver weather (Open-Meteo, no API key) ----------
      Note: the claude.ai preview sandbox blocks external data requests, so the
@@ -1040,6 +1103,7 @@
              rain:{g:"🌧️",t:"Rain"}, snow:{g:"❄️",t:"Snow"}, storm:{g:"⛈️",t:"Storm"} };
   function applyWeather(cat, tempF) {
     haveWx = true;
+    wxNow = cat; updateSnow();
     document.getElementById("os").setAttribute("data-wx", cat);
     var precip = document.getElementById("precip"); precip.innerHTML = "";
     if (!reduce && (cat === "rain" || cat === "snow")) {
@@ -1098,7 +1162,8 @@
         '  <span class="u">social</span>     where to find me\n' +
         '  <span class="u">strava</span>     the zone 4 run club\n' +
         '  <span class="u">open [app]</span> open a window\n' +
-        '  <span class="u">time</span>       your local time &amp; mood\n' +
+        '  <span class="u">time</span>       denver time &amp; mood\n' +
+        '  <span class="u">sun</span>        today\'s sunrise &amp; sunset\n' +
         '  <span class="u">clear</span>      clear the screen\n' +
         '  <span class="muted2">...a few things aren\'t on this list. poke around.</span>';
     },
@@ -1114,7 +1179,8 @@
     writing: function () { openWin("writing"); return "opening ~/writing — 10 essays on deep tech & AI."; },
     social: function () { return 'x:  <a href="https://x.com/taylorbhurst" target="_blank" rel="noopener">@taylorbhurst</a>\ninsta: <a href="https://instagram.com/taylorhurst23" target="_blank" rel="noopener">@taylorhurst23</a>\nstrava: <a href="https://strava.app.link/IpmwjqXom8b" target="_blank" rel="noopener">zone 4 run club</a>'; },
     strava: function () { return 'the zone 4 run club — live and unfiltered:\n<a href="https://strava.app.link/IpmwjqXom8b" target="_blank" rel="noopener">strava.app.link/…</a>\nmediocre times, proudly posted. 💈'; },
-    time: function () { var n=new Date(); return "it's " + n.toLocaleTimeString() + " in " + city + " — mood: " + curPeriod; },
+    time: function () { return "it's " + denverTime() + " in " + city + " — mood: " + curPeriod; },
+    sun: function () { var s = sunTimes(new Date()); return "denver today: sunrise " + denverClock(s.rise) + " · sunset " + denverClock(s.set) + "\nalpenglow runs ~75 min before sunset to ~40 min after."; },
     ls: function () { return APPS.map(function(a){return a.cap;}).join("   "); },
     clear: function () { out.innerHTML = ""; return ""; },
     karaoke: function () { return "🎤 tonight's pick: " + kara[Math.floor(Math.random()*kara.length)]; },
