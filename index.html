@@ -171,9 +171,18 @@
   }
   .titlebar:active { cursor: grabbing; }
   .lights { display: flex; gap: 6px; }
-  .lights span { width: 12px; height: 12px; border-radius: 50%; display: block; border: 1px solid rgba(0,0,0,.12); }
+  .lights button { width: 12px; height: 12px; border-radius: 50%; padding: 0; border: 1px solid rgba(0,0,0,.12); cursor: pointer;
+    display: grid; place-items: center; font: 700 9px/1 var(--mono); color: transparent; }
   .lights .r { background: #ff5f57; } .lights .y { background: #febc2e; } .lights .g { background: #28c840; }
-  .lights .r { cursor: pointer; }
+  .titlebar:hover .lights button, .lights button:focus-visible { color: rgba(0,0,0,.55); }
+  .lights button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  /* green = grow to fit the content (no inner scroll bar); yellow = window-shade (collapse to title bar) */
+  .window.max { top: 12px !important; height: auto; max-height: calc(100% - 24px); }
+  .window.max .content { scrollbar-width: none; }
+  .window.max .content::-webkit-scrollbar { display: none; }
+  .window.max .titlebar { cursor: default; }
+  .window.shaded .content, .window.shaded .terminput { display: none; }
+  .window.shaded .titlebar { border-bottom: 0; }
   .titlebar .tt { font-size: 12.5px; font-weight: 500; color: var(--ink-soft); }
   .titlebar .tt b { color: var(--ink); font-weight: 700; }
   .content { padding: 20px 22px 24px; overflow: auto; }
@@ -319,6 +328,7 @@
   @media (max-width: 560px) {
     .icons { grid-auto-flow: row; grid-template-columns: repeat(auto-fill, 84px); grid-template-rows: none; justify-content: center; padding-top: 120px; }
     .window.open { left: 50% !important; top: 50% !important; transform: translate(-50%,-50%); width: 94vw; max-height: 80%; }
+    .window.open.max { max-height: calc(100% - 16px); }
     .titlebar { cursor: default; }
   }
 </style>
@@ -511,13 +521,18 @@
     w.style.zIndex = ++z;
     if (id === "terminal") setTimeout(function(){ document.getElementById("termIn").focus(); }, 30);
   }
-  function closeWin(id) { var w = document.getElementById("win-" + id); if (w) w.classList.remove("open"); }
+  function closeWin(id) { var w = document.getElementById("win-" + id); if (w) w.classList.remove("open", "max", "shaded"); }
+  function toggleMax(w) { w.classList.remove("shaded"); w.classList.toggle("max"); w.style.zIndex = ++z; }
+  function toggleShade(w) { w.classList.remove("max"); w.classList.toggle("shaded"); w.style.zIndex = ++z; }
 
   document.addEventListener("click", function (e) {
     var o = e.target.closest("[data-open]");
     if (o) { openWin(o.getAttribute("data-open")); return; }
-    var r = e.target.closest(".lights .r");
-    if (r) { r.closest(".window").classList.remove("open"); }
+    var b = e.target.closest(".lights button"); if (!b) return;
+    var w = b.closest(".window");
+    if (b.classList.contains("r")) w.classList.remove("open", "max", "shaded");
+    else if (b.classList.contains("y")) toggleShade(w);
+    else if (b.classList.contains("g")) toggleMax(w);
   });
   // double-click icons also fine (single already opens); focus state for keyboard
   grid.addEventListener("keydown", function (e) {
@@ -530,9 +545,13 @@
     var tb = document.createElement("div");
     tb.className = "titlebar";
     var title = w.getAttribute("data-title") || "";
-    tb.innerHTML = '<span class="lights"><span class="r" title="close"></span><span class="y"></span><span class="g"></span></span>' +
-                   '<span class="tt">' + title + '</span>';
+    tb.innerHTML = '<span class="lights">' +
+                     '<button type="button" class="r" title="Close" aria-label="Close window">×</button>' +
+                     '<button type="button" class="y" title="Collapse" aria-label="Collapse window">−</button>' +
+                     '<button type="button" class="g" title="Expand" aria-label="Expand window">+</button>' +
+                   '</span><span class="tt">' + title + '</span>';
     w.insertBefore(tb, w.firstChild);
+    tb.addEventListener("dblclick", function (e) { if (!e.target.closest(".lights")) toggleMax(w); });
     makeDraggable(w, tb);
   });
 
@@ -540,7 +559,7 @@
     var sx, sy, ox, oy, drag = false;
     handle.addEventListener("pointerdown", function (e) {
       if (e.target.closest(".lights")) return;
-      if (window.innerWidth <= 560) return;
+      if (window.innerWidth <= 560 || win.classList.contains("max")) return;
       drag = true; win.style.zIndex = ++z;
       sx = e.clientX; sy = e.clientY;
       var r = win.getBoundingClientRect(); ox = r.left; oy = r.top;
