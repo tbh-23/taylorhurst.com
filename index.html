@@ -283,7 +283,7 @@
   #win-games { width: min(620px, 94vw); }
   #win-games .lede { margin-bottom: 6px; }
   #win-games .btd-rules { font-size: 12.5px; line-height: 1.5; margin: 0 0 12px; }
-  .btd { --ch: clamp(60px, calc((82vh - 290px) / 3), 112px);
+  .btd { --ch: clamp(60px, calc((82vh - 305px) / 3), 112px);
     display: flex; align-items: center; justify-content: center; gap: 20px;
     background: linear-gradient(180deg,#0e2a1f,#0b1f18); border: 1px solid #1d3b2e; border-radius: 12px; padding: 14px; color: #eafff4; }
   .btd-grid { display: grid; grid-template-columns: repeat(3, calc(var(--ch) * .72)); grid-auto-rows: var(--ch); gap: 8px; flex: none; }
@@ -355,9 +355,11 @@
     /* phone: cards on top, one row of buttons underneath */
     #win-games .lede { display: none; }
     #win-games.open { max-height: 94%; }
-    #win-games .content { padding: 14px 16px 16px; }
-    .btd { flex-direction: column; gap: 10px; padding: 12px;
-      --ch: clamp(52px, min(calc((94vh - 430px) / 3), calc((94vw - 90px) / 2.16)), 104px); }
+    #win-games .content { padding: 12px 14px 14px; }
+    #win-games h2 { font-size: 18px; }
+    #win-games .btd-rules { font-size: 12px; line-height: 1.45; margin-bottom: 10px; }
+    .btd { flex-direction: column; gap: 8px; padding: 10px;
+      --ch: clamp(46px, min(calc((94vh - 455px) / 3), calc((94vw - 90px) / 2.16)), 100px); }
     .btd-side { width: 100%; gap: 6px; }
     .btd-ctrls { flex-direction: row; }
     .btd-ctrls .bj-btn { flex: 1; }
@@ -465,7 +467,7 @@
       <div class="content">
         <h2>games</h2>
         <p class="lede">Board nights, card tables, and the occasional heated rules debate.</p>
-        <p class="btd-rules"><b>Beat the Deck</b> is the one my friends and I always play out. Pick a face-up card, call <b>higher</b> or <b>lower</b> than it, and clear the whole deck before all nine piles flip. A tie flips the pile.</p>
+        <p class="btd-rules"><b>Beat the Deck</b> is the one my friends and I always play out. Pick a card, call <b>higher</b> or <b>lower</b>, and clear the deck before all nine piles flip. Ties flip the pile. <b>Aces</b> are locked 🔒 until one is drawn: call higher and Aces are high all game, call lower and they're low.</p>
         <div class="btd" id="btd">
           <div class="btd-grid" id="btdGrid"></div>
           <div class="btd-side">
@@ -644,7 +646,8 @@
     function controls() { var can = !over && sel > -1; bHi.disabled = !can; bLo.disabled = !can; }
     function score() {
       var alive = piles.filter(function (p) { return !p.dead; }).length;
-      elScore.innerHTML = "<b>" + deck.length + "</b> cards left · " + alive + "/9 piles<br>best run " + best + (wins ? " · wins " + wins : "");
+      var aces = aceHigh === null ? "aces locked 🔒" : aceHigh ? "aces <b>high</b>" : "aces <b>low</b>";
+      elScore.innerHTML = "<b>" + deck.length + "</b> cards left · " + alive + "/9 piles<br>" + aces + " · best run " + best + (wins ? " · wins " + wins : "");
       try { localStorage.setItem("btd-score", JSON.stringify({ best: best, wins: wins })); } catch (e) {}
     }
     function deal() {
@@ -663,11 +666,13 @@
     function guess(dir) {
       if (over || sel < 0) return;
       var p = piles[sel], d = deck.pop();
-      if (d.r === "A" && aceHigh === null) aceHigh = (dir === "higher");
+      var aceSet = d.r === "A" && aceHigh === null;
+      if (aceSet) aceHigh = (dir === "higher");
       var dv = value(d), fv = value(p.card);
       var correct = dir === "higher" ? dv > fv : dv < fv;
-      if (correct) { p.card = d; beaten++; elMsg.className = "bj-msg win"; elMsg.innerHTML = "Drew <b>" + d.r + d.s + "</b>. Right, keep going."; }
-      else { p.dead = true; elMsg.className = "bj-msg lose"; elMsg.innerHTML = "Drew <b>" + d.r + d.s + "</b>. That pile flips."; }
+      var aceNote = aceSet ? " Aces are now <b>" + (aceHigh ? "high" : "low") + "</b>." : "";
+      if (correct) { p.card = d; beaten++; elMsg.className = "bj-msg win"; elMsg.innerHTML = "Drew <b>" + d.r + d.s + "</b>." + (aceNote || " Right, keep going."); }
+      else { p.dead = true; elMsg.className = "bj-msg lose"; elMsg.innerHTML = "Drew <b>" + d.r + d.s + "</b>. That pile flips." + aceNote; }
       sel = -1;
       var alive = piles.filter(function (q) { return !q.dead; }).length;
       if (alive === 0) { endGame(false); return; }
