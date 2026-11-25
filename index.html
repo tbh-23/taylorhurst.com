@@ -416,9 +416,7 @@
         <p>Off the clock: chasing a running PR, losing a board game I swore I'd win, or on a plane to the next trip with friends. I like understanding how things work: history and new technology in roughly equal measure.</p>
         <div class="links">
           <a class="chip" href="https://x.com/taylorbhurst" target="_blank" rel="noopener">𝕏 @taylorbhurst</a>
-          <a class="chip" href="https://instagram.com/taylorhurst23" target="_blank" rel="noopener"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="17.3" cy="6.7" r="1.35" fill="currentColor"/></svg>@taylorhurst23</a>
-          <a class="chip" href="https://strava.app.link/IpmwjqXom8b" target="_blank" rel="noopener"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg>strava</a>
-        </div>
+          <a class="chip" href="https://instagram.com/taylorhurst23" target="_blank" rel="noopener"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="17.3" cy="6.7" r="1.35" fill="currentColor"/></svg>@taylorhurst23</a>        </div>
       </div>
     </section>
 
@@ -1106,9 +1104,7 @@
         '  <span class="u">games</span>      board &amp; card stuff\n' +
         '  <span class="u">travels</span>    trips &amp; karaoke\n' +
         '  <span class="u">writing</span>    notes &amp; essays\n' +
-        '  <span class="u">social</span>     where to find me\n' +
-        '  <span class="u">strava</span>     the zone 4 run club\n' +
-        '  <span class="u">open [app]</span> open a window\n' +
+        '  <span class="u">social</span>     where to find me\n' +        '  <span class="u">open [app]</span> open a window\n' +
         '  <span class="u">time</span>       denver time &amp; mood\n' +
         '  <span class="u">sun</span>        today\'s sunrise &amp; sunset\n' +
         '  <span class="u">clear</span>      clear the screen\n' +
@@ -1124,9 +1120,7 @@
     flights: function () { return CMDS.travels(); },
     map: function () { return CMDS.travels(); },
     writing: function () { openWin("writing"); return "opening ~/writing: 10 essays on deep tech & AI."; },
-    social: function () { return 'x:  <a href="https://x.com/taylorbhurst" target="_blank" rel="noopener">@taylorbhurst</a>\ninsta: <a href="https://instagram.com/taylorhurst23" target="_blank" rel="noopener">@taylorhurst23</a>\nstrava: <a href="https://strava.app.link/IpmwjqXom8b" target="_blank" rel="noopener">zone 4 run club</a>'; },
-    strava: function () { return 'the zone 4 run club, live and unfiltered:\n<a href="https://strava.app.link/IpmwjqXom8b" target="_blank" rel="noopener">strava.app.link/…</a>\nmediocre times, proudly posted. 💈'; },
-    time: function () { return "it's " + denverTime() + " in " + city + " · mood: " + curPeriod; },
+    social: function () { return 'x:  <a href="https://x.com/taylorbhurst" target="_blank" rel="noopener">@taylorbhurst</a>\ninsta: <a href="https://instagram.com/taylorhurst23" target="_blank" rel="noopener">@taylorhurst23</a>'; },    time: function () { return "it's " + denverTime() + " in " + city + " · mood: " + curPeriod; },
     sun: function () { var s = sunTimes(new Date()); return "denver today: sunrise " + denverClock(s.rise) + " · sunset " + denverClock(s.set) + "\nalpenglow runs ~75 min before sunset to ~40 min after."; },
     ls: function () { return APPS.map(function(a){return a.cap;}).join("   "); },
     clear: function () { out.innerHTML = ""; return ""; },
